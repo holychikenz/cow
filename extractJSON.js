@@ -70,6 +70,7 @@ function collect(client){
     enhancementCosts = value.enhancementCosts;
     // equipmentDetail
     equipmentDetail = value.equipmentDetail;
+    data["items"][value.name] = newitem;
   }
 
   writedata(data);
