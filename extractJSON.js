@@ -72,6 +72,20 @@ function collect(client){
     equipmentDetail = value.equipmentDetail;
     data["items"][value.name] = newitem;
   }
+  // Actions
+  data["actions"] = {};
+  for( const [key, value] of Object.entries(client.actionDetailMap) ){
+    newaction = {};
+    newaction["baseTimeCost"] = value.baseTimeCost;
+    newaction["experience"] = value.experienceGain.value;
+    newaction["inputItems"] = value.inputItems;
+    newaction["levelRequirement"] = value.levelRequirement.level;
+    newaction["name"] = value.name;
+    newaction["outputItems"] = value.outputItems;
+    newaction["upgradeItem"] = value.upgradeItem;
+
+    data["actions"][key] = newaction;
+  }
 
   writedata(data);
 }
