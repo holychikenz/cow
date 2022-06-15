@@ -83,6 +83,7 @@ function collect(client){
     newaction["name"] = value.name;
     newaction["outputItems"] = value.outputItems;
     newaction["upgradeItem"] = value.upgradeItem;
+    newaction["dropTable"] = value.dropTable;
 
     data["actions"][key] = newaction;
   }
