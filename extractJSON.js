@@ -66,10 +66,15 @@ function collect(client){
     newitem["sellPrice"] = value.sellPrice;
     // ConsumableDetails
     consumableDetail = value.consumableDetail;
+    newitem["consumableDetail"] = consumableDetail;
     // enhancementCosts
     enhancementCosts = value.enhancementCosts;
+    newitem["enhancementCosts"] = enhancementCosts;
     // equipmentDetail
     equipmentDetail = value.equipmentDetail;
+    newitem["combatEnhancementBonuses"] = equipmentDetail.combatEnhancementBonuses;
+    newitem["combatStats"] = equipmentDetail.combatStats;
+    newitem["equipmentType"] = equipmentDetail.type;
     data["items"][value.name] = newitem;
   }
   // Actions
