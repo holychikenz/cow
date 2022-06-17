@@ -74,6 +74,13 @@ function collect(client){
     equipmentDetail = value.equipmentDetail;
     newitem["combatEnhancementBonuses"] = equipmentDetail.combatEnhancementBonuses;
     newitem["combatStats"] = equipmentDetail.combatStats;
+    // Combat Style
+    combatStyle = equipmentDetail.combatStyleHrids;
+    if( combatStyle != null ){
+      newitem["combatStats"]["combatStyle"] = combatStyle[0];
+    } else {
+      newitem["combatStats"]["combatStyle"] = "";
+    }
     newitem["equipmentType"] = equipmentDetail.type;
     data["items"][value.name] = newitem;
   }
