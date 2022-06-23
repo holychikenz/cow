@@ -74,6 +74,7 @@ function collect(client){
     equipmentDetail = value.equipmentDetail;
     newitem["combatEnhancementBonuses"] = equipmentDetail.combatEnhancementBonuses;
     newitem["combatStats"] = equipmentDetail.combatStats;
+    newitem["noncombatStats"] = equipmentDetail.noncombatStats;
     // Combat Style
     combatStyle = equipmentDetail.combatStyleHrids;
     if( combatStyle != null ){
