@@ -100,6 +100,12 @@ function collect(client){
 
     data["actions"][key] = newaction;
   }
+  // Abilities
+  data["abilities"] = {};
+  for( const [key, value] of Object.entries(client.abilityDetailMap) ){
+    newability = value;
+    data["abilities"][key] = newability;
+  }
 
   writedata(data);
 }
