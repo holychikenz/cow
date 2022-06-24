@@ -98,6 +98,7 @@ function collect(client){
     newaction["upgradeItem"] = value.upgradeItem;
     newaction["dropTable"] = value.dropTable;
     newaction["upgradeItem"] = value.upgradeItemHrid;
+    newaction["monsterSpawnRates"] = value.monsterSpawnRates;
 
     data["actions"][key] = newaction;
   }
