@@ -18,6 +18,7 @@ function collect(client){
   for( const [key, value] of Object.entries(client.combatMonsterDetailMap) ){
     let newMonster = {};
     newMonster["name"] = value.name;
+    newMonster["hrid"] = value.hrid;
     // Combat details
     combatDetails = value.combatDetails;
     // Combat stats
@@ -54,7 +55,7 @@ function collect(client){
     }
     newMonster["drops"] = drops;
     // Add the monster
-    data["monsters"][value.name] = newMonster;
+    data["monsters"][key] = newMonster;
   }
   // Items
   data["items"] = {};
