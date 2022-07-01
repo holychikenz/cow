@@ -19,6 +19,7 @@ function collect(client){
     let newMonster = {};
     newMonster["name"] = value.name;
     newMonster["hrid"] = value.hrid;
+    newMonster["abilities"] = value.abilities;
     // Combat details
     combatDetails = value.combatDetails;
     // Combat stats
