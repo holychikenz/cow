@@ -1,20 +1,31 @@
 // ==UserScript==
 // @name         CowNotify
-// @version      0.0.1
+// @version      0.0.2
 // @description  Milkyway example script
-// @updateURL    https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
-// @downloadURL  https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
 // @author       Holychikenz
 // @match        *://*www.milkywayidle.com/*
+// @match        *://*test.milkywayidle.com/*
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
 
-window.cowsocket = undefined;
 const nativeWebSocket = window.WebSocket;
 window.WebSocket = function(...args){
   const socket = new nativeWebSocket(...args);
   window.cowsocket = socket;
+  window.cowsocket.addEventListener('message', function handler(e){
+    let msg = JSON.parse(e.data);
+    if( msg.type == 'init_character_info' ){
+      window.init_character_info = msg;
+    }
+    if( msg.type == 'init_client_info' ){
+      window.init_client_info = msg;
+    }
+    if( typeof window.init_character_info !== 'undefined' && typeof window.init_client_info !== 'undefined' ){
+      window.cowsocketready = true;
+      this.removeEventListener('message', handler);
+    }
+  });
   return socket;
 };
 
@@ -25,13 +36,13 @@ class notify {
   begin(promise){
     let self = this;
     promise = promise || new Promise( ()=>{} );
-    if( typeof window.cowsocket !== 'undefined' ){
+    if( window.cowsocketready ){
       promise.then();
     } else {
       setTimeout(function(){self.begin(promise)}, 1000);
       return false;
     }
-    console.log("Adding event listener");
+    console.log("Notifications connected");
     window.cowsocket.addEventListener('message', (e)=>self.run(self, e));
     Notification.requestPermission();
   }
@@ -47,6 +58,39 @@ class notify {
     let note = new Notification( message, {icon: "/assets/images/logos/logo_transparent_570.svg"} );
     note.onclick = function(){window.focus(); this.close()};
     setTimeout(()=>{note.close()}, 10*1000);
+  }
+}
+
+class ETA {
+  // Calculate the time remaining for current action.
+  // Also: Total XP, Final XP, Final Level? Maybe on hover ...
+  constructor() {
+    this.begin();
+  }
+  begin(promise){
+    let self = this;
+    promise = promise || new promise( ()=>{} );
+    if( window.cowsocketready ){
+      promise.then();
+    } else {
+      setTimeout(function(){self.begin(promise)}, 1000);
+      return false;
+    }
+    window.cowsocket.addEventListener('message',(e)=>self.run(self,e));
+  }
+  run(obj, msg){
+    msg = JSON.parse(msg.data);
+    // Update Character on level up needed. No.
+    if( msg.type == "action_completed" ){
+    }
+    if( msg.type == "action_started" ){
+    }
+    // Update speed based on tool bonus
+    if( msg.type == "items_updated" ){
+      let items = msg.endCharacterItems;
+      for( let itm of items ){
+      }
+    }
   }
 }
 
@@ -70,6 +114,17 @@ class combatlog {
     self.beginPower= 0;
     self.beginIntelligence = 0;
     self.beginStamina= 0;
+    // update all items
+    if( typeof self.combatDrops !== 'undefined' ){
+      for( const [key, value] of Object.entries(self.combatDrops) ) {
+        for( let base of self.characterItems ){
+          if( base.itemHrid == key ){
+            base.count += value.count;
+          }
+        }
+      }
+    }
+    self.combatDrops = {};
   }
   partialreset(self){
     self.timer = Date.now();
@@ -84,16 +139,23 @@ class combatlog {
   begin(promise){
     let self = this;
     promise = promise || new Promise( ()=>{} );
-    if( typeof window.cowsocket !== 'undefined' ){
+    if( window.cowsocketready ){
       promise.then();
     } else {
       setTimeout(function(){self.begin(promise)}, 1000);
       return false;
     }
+    self.characterItems = window.init_character_info.characterItems;
+    self.rarity = self.buildRarityDictionary();
+    console.log(self.rarity);
     window.cowsocket.addEventListener('message', (e)=>self.run(self, e));
     self.statswindow = document.createElement("div");
     self.statswindow.className = "chikenz_combatlog_stats";
     self.statswindow.style.width = '300px';
+
+    self.dropswindow = document.createElement("div");
+    self.dropswindow.className = "chikenz_combatlog_stats";
+    self.dropswindow.style.width = '300px';
     let css = `
         table.chikenz_combatlog_stats {
           border: 1px solid #FFFFFF;
@@ -111,6 +173,42 @@ class combatlog {
         table.chikenz_combatlog_stats tr:nth-child(odd) {
           background: #152242;
         }
+
+        .chikenz_drop_box {
+          display:grid;
+          grid-template-rows:repeat(4, 50px);
+          grid-auto-columns:50px;
+          grid-auto-flow:column dense;
+          column-gap:4px;
+          row-gap:4px;
+        }
+        .chikenz_drop_item {
+          border-radius: 4px;
+          border: 1px solid var(--color-space-300);
+        }
+        .chikenz_rare {
+          border: 2px solid #fcc203;
+        }
+        .chikenz_drop_box > div:nth-child(4n + 2) { grid-row:2; }
+        .chikenz_drop_box > div:nth-child(4n + 3) { grid-row:3; }
+        .chikenz_drop_box > div:nth-child(4n + 4) { grid-row:4; }
+        .chikenz_drop_img {
+          position: absolute;
+          top: 15%;
+          left: 15%;
+          width: 70%;
+          height: 70%;
+        }
+        .chikenz_drop_text {
+          z-index: 1;
+          position: absolute;
+          bottom: -3px;
+          font-weight: 800;
+          right: 2px;
+          text-align: left;
+          font-size: 12px;
+          text-shadow: -1px 0 var(--color-background-dark-mode),0 1px var(--color-background-dark-mode),1px 0 var(--color-background-dark-mode),0 -1px var(--color-background-dark-mode);
+        }
     `
     appendCSS(css);
   }
@@ -127,6 +225,8 @@ class combatlog {
       }
       // Add up monster HP -- though they can heal =(
       let timediff = (Date.now() - this.timer)/3.6e6;
+      let titlebar = document.querySelectorAll("[class^='BattlePanel_title']")[0];
+      titlebar.innerHTML += `<br>${timeFormat(timediff*3600)}`;
       let kph = this.counter / timediff;
       // update the stats box
       let panel = document.querySelectorAll("[class^='BattlePanel_playersArea']")
@@ -142,7 +242,15 @@ class combatlog {
         <tr><td>Intelligence XP</td><td>${((this.skillIntelligence-this.beginIntelligence)/timediff).toFixed(0)} / hour</td></tr>
         </table>
         `
+        // Drops
         panel.append(this.statswindow)
+      }
+      // Same type of panel but for items?
+      let panel2 = document.querySelectorAll("[class^='BattlePanel_monstersArea']")
+      if( panel2.length > 0 ){
+        panel2 = panel2[0];
+        this.dropswindow.innerHTML = this.buildItemTable(this, this.combatDrops);
+        panel2.append(this.dropswindow);
       }
     }
     if( msg.type == 'action_completed' ){
@@ -183,6 +291,86 @@ class combatlog {
         }
       }
     }
+    if( msg.type == 'action_completed' ){
+      let endItems = msg.endCharacterItems;
+      this.updateItems(this, endItems);
+    }
+    if( msg.type == 'items_updated' ){
+      for( let item of msg.endCharacterItems ){
+        for( let base of this.characterItems ){
+          if( base.itemHrid == item.itemHrid ){
+            if( item.itemHrid in this.combatDrops ){
+              base.count = item.count - this.combatDrops[item.itemHrid].count;
+            } else {
+              base.count = item.count;
+            }
+          }
+        }
+      }
+    }
+  }
+  updateItems(self, endItems){
+    for( let item of self.characterItems ){
+      for( let deltaItem of endItems ){
+        if( item.itemHrid == deltaItem.itemHrid && deltaItem.itemLocationHrid == "/item_locations/inventory"){
+          if( item.itemHrid in self.combatDrops ){
+            self.combatDrops[item.itemHrid].count = deltaItem.count - item.count;
+          } else {
+            self.combatDrops[item.itemHrid] = {"count": deltaItem.count - item.count};
+          }
+        }
+      }
+    }
+  }
+  buildItemTable(self, items){
+    let innerHTML = `<table class="chikenz_combatlog_stats">`
+    for( const [key, value] of Object.entries(items) ){
+      innerHTML += `<tr><td><img src=assets/images${key}.svg height="20px"/></td><td>${value.count}</td></tr>`
+    }
+    innerHTML += `</table>`
+
+    innerHTML = `<div class="chikenz_drop_box">`
+    let keyArray = Object.keys(items).sort((a,b)=>self.rarity[b]-self.rarity[a]);
+    for( let key of keyArray ){
+      let value = items[key];
+      let itemclass = "chikenz_drop_item";
+      if( self.rarity[key] <= 0.045 ){ itemclass += " chikenz_rare"; }
+      innerHTML += `<div class="${itemclass}" style="position:relative;" height="50px"><img src=assets/images${key}.svg class="chikenz_drop_img"><div class="chikenz_drop_text">${this.numberDisplay(value.count)}</div></div>`
+    }
+    innerHTML += `</div>`
+    return innerHTML
+  }
+
+  numberDisplay(num) {
+    let snum = ""
+    if( num > 1e6 ){
+      snum = `${(num/1e6).toFixed(2)}M`
+    }
+    else if( num > 1e5 ){
+      snum = `${(num/1e3).toFixed(0)}K`
+    }
+    else {
+      snum = `${numberWithCommas(num)}`
+    }
+    return snum
+  }
+
+  buildRarityDictionary(){
+    let monsters = window.init_client_info.combatMonsterDetailMap;
+    let rarity = {};
+    for(const [monName, mon] of Object.entries(monsters)){
+      let dropTable = mon.dropTable;
+      for( let drop of dropTable ){
+        let name = drop.itemHrid;
+        let rate = drop.dropRate;
+        if( name in rarity ){
+          if( rate > rarity[name] ){ rarity[name] = rate; }
+        } else {
+          rarity[name] = rate;
+        }
+      }
+    }
+    return rarity;
   }
 }
 
@@ -199,7 +387,11 @@ function timeFormat(time){
   if( hours < 10 ){hours = `0${hours}`;}
   if( minutes < 10 ){minutes = `0${minutes}`;}
   if( seconds < 10 ){seconds = `0${seconds}`;}
-  return `${hours}:${minutes}:${seconds}`;
+  if( time/3600 >= 1 ){
+    return `${hours}:${minutes}:${seconds}`;
+  } else {
+    return `${minutes}:${seconds}`;
+  }
 }
 
 function timeFormatFull(time){
