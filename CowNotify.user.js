@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         CowNotify
-// @version      0.0.2
+// @version      0.0.3
 // @description  Milkyway example script
 // @author       Holychikenz
+// @updateURL    https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
+// @downloadURL  https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
 // @match        *://*www.milkywayidle.com/*
 // @match        *://*test.milkywayidle.com/*
 // @run-at       document-start
