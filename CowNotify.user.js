@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         CowNotify
-// @version      0.0.3
+// @version      0.0.4
 // @description  Milkyway example script
 // @author       Holychikenz
 // @updateURL    https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
@@ -44,7 +44,6 @@ class notify {
       setTimeout(function(){self.begin(promise)}, 1000);
       return false;
     }
-    console.log("Notifications connected");
     window.cowsocket.addEventListener('message', (e)=>self.run(self, e));
     Notification.requestPermission();
   }
@@ -149,7 +148,6 @@ class combatlog {
     }
     self.characterItems = window.init_character_info.characterItems;
     self.rarity = self.buildRarityDictionary();
-    console.log(self.rarity);
     window.cowsocket.addEventListener('message', (e)=>self.run(self, e));
     self.statswindow = document.createElement("div");
     self.statswindow.className = "chikenz_combatlog_stats";
@@ -312,15 +310,27 @@ class combatlog {
     }
   }
   updateItems(self, endItems){
+    let itemAccountedFor = {};
+    for( let deltaItem of endItems ){
+      itemAccountedFor[deltaItem.itemHrid] = false;
+    }
     for( let item of self.characterItems ){
       for( let deltaItem of endItems ){
         if( item.itemHrid == deltaItem.itemHrid && deltaItem.itemLocationHrid == "/item_locations/inventory"){
           if( item.itemHrid in self.combatDrops ){
             self.combatDrops[item.itemHrid].count = deltaItem.count - item.count;
+            itemAccountedFor[item.itemHrid] = true;
           } else {
             self.combatDrops[item.itemHrid] = {"count": deltaItem.count - item.count};
+            itemAccountedFor[item.itemHrid] = true;
           }
         }
+      }
+    }
+    // Missed items
+    for( let deltaItem of endItems ){
+      if( !(itemAccountedFor[deltaItem.itemHrid]) && deltaItem.itemLocationHrid == "/item_locations/inventory" ){
+        self.combatDrops[deltaItem.itemHrid] = {"count": deltaItem.count};
       }
     }
   }
