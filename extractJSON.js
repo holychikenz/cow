@@ -78,7 +78,7 @@ function collect(client){
     newitem["combatStats"] = equipmentDetail.combatStats;
     newitem["noncombatStats"] = equipmentDetail.noncombatStats;
     // Combat Style
-    combatStyle = equipmentDetail.combatStyleHrids;
+    combatStyle = equipmentDetail.combatStats.combatStyleHrids;
     if( combatStyle != null ){
       newitem["combatStats"]["combatStyle"] = combatStyle[0];
     } else {
