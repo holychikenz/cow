@@ -36,8 +36,8 @@ function collect(client){
     newMonster["stabEvasion"] = combatStats.stabEvasion;
     newMonster["armor"] = combatStats.armor;
     newMonster["lifeSteal"] = combatStats.lifeSteal;
+    newMonster["combatStyleHrid"] = combatStats.combatStyleHrids[0];
     //
-    newMonster["combatStyleHrid"] = combatDetails.combatStyleHrid;
     newMonster["currentHitpoints"] = combatDetails.currentHitpoints;
     newMonster["currentManapoints"] = combatDetails.currentManapoints;
     newMonster["defenseLevel"] = combatDetails.defenseLevel;
