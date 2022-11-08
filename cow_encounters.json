@@ -1,0 +1,186 @@
+{
+  "/actions/combat/alligator": {
+    "/combat_monsters/alligator": 1.0
+  },
+  "/actions/combat/aqua_planet": {
+    "/combat_monsters/aquahorse": 0.658232,
+    "/combat_monsters/crab": 0.667696,
+    "/combat_monsters/nom_nom": 0.658212,
+    "/combat_monsters/sea_snail": 0.735903,
+    "/combat_monsters/turtle": 0.559497
+  },
+  "/actions/combat/aquahorse": {
+    "/combat_monsters/aquahorse": 1.0
+  },
+  "/actions/combat/bear_with_it": {
+    "/combat_monsters/black_bear": 0.511206,
+    "/combat_monsters/grizzly_bear": 0.480224,
+    "/combat_monsters/gummy_bear": 0.592481,
+    "/combat_monsters/panda": 0.479987,
+    "/combat_monsters/polar_bear": 0.456638
+  },
+  "/actions/combat/black_bear": {
+    "/combat_monsters/black_bear": 1.0
+  },
+  "/actions/combat/centaur_archer": {
+    "/combat_monsters/centaur_archer": 1.0
+  },
+  "/actions/combat/crab": {
+    "/combat_monsters/crab": 1.0
+  },
+  "/actions/combat/elementalist": {
+    "/combat_monsters/elementalist": 1.0
+  },
+  "/actions/combat/eye": {
+    "/combat_monsters/eye": 1.0
+  },
+  "/actions/combat/eyes": {
+    "/combat_monsters/eyes": 1.0
+  },
+  "/actions/combat/flame_sorcerer": {
+    "/combat_monsters/flame_sorcerer": 1.0
+  },
+  "/actions/combat/fly": {
+    "/combat_monsters/fly": 1.0
+  },
+  "/actions/combat/frog": {
+    "/combat_monsters/frog": 1.0
+  },
+  "/actions/combat/gobo_boomy": {
+    "/combat_monsters/gobo_boomy": 1.0
+  },
+  "/actions/combat/gobo_planet": {
+    "/combat_monsters/gobo_boomy": 0.400036,
+    "/combat_monsters/gobo_shooty": 0.40012,
+    "/combat_monsters/gobo_slashy": 0.399749,
+    "/combat_monsters/gobo_smashy": 0.400687,
+    "/combat_monsters/gobo_stabby": 0.399408
+  },
+  "/actions/combat/gobo_shooty": {
+    "/combat_monsters/gobo_shooty": 1.0
+  },
+  "/actions/combat/gobo_slashy": {
+    "/combat_monsters/gobo_slashy": 1.0
+  },
+  "/actions/combat/gobo_smashy": {
+    "/combat_monsters/gobo_smashy": 1.0
+  },
+  "/actions/combat/gobo_stabby": {
+    "/combat_monsters/gobo_stabby": 1.0
+  },
+  "/actions/combat/golem_cave": {
+    "/combat_monsters/granite_golem": 0.704764,
+    "/combat_monsters/magnetic_golem": 0.887567,
+    "/combat_monsters/stalactite_golem": 0.777412
+  },
+  "/actions/combat/granite_golem": {
+    "/combat_monsters/granite_golem": 1.0
+  },
+  "/actions/combat/grizzly_bear": {
+    "/combat_monsters/grizzly_bear": 1.0
+  },
+  "/actions/combat/gummy_bear": {
+    "/combat_monsters/gummy_bear": 1.0
+  },
+  "/actions/combat/ice_sorcerer": {
+    "/combat_monsters/ice_sorcerer": 1.0
+  },
+  "/actions/combat/jungle_planet": {
+    "/combat_monsters/centaur_archer": 0.659327,
+    "/combat_monsters/jungle_sprite": 0.828937,
+    "/combat_monsters/myconid": 0.772954,
+    "/combat_monsters/treant": 0.719245
+  },
+  "/actions/combat/jungle_sprite": {
+    "/combat_monsters/jungle_sprite": 1.0
+  },
+  "/actions/combat/magnetic_golem": {
+    "/combat_monsters/magnetic_golem": 1.0
+  },
+  "/actions/combat/myconid": {
+    "/combat_monsters/myconid": 1.0
+  },
+  "/actions/combat/nom_nom": {
+    "/combat_monsters/nom_nom": 1.0
+  },
+  "/actions/combat/novice_sorcerer": {
+    "/combat_monsters/novice_sorcerer": 1.0
+  },
+  "/actions/combat/panda": {
+    "/combat_monsters/panda": 1.0
+  },
+  "/actions/combat/planet_of_the_eyes": {
+    "/combat_monsters/eye": 0.888691,
+    "/combat_monsters/eyes": 0.778235,
+    "/combat_monsters/veyes": 0.703626
+  },
+  "/actions/combat/polar_bear": {
+    "/combat_monsters/polar_bear": 1.0
+  },
+  "/actions/combat/porcupine": {
+    "/combat_monsters/porcupine": 1.0
+  },
+  "/actions/combat/rat": {
+    "/combat_monsters/rat": 1.0
+  },
+  "/actions/combat/sea_snail": {
+    "/combat_monsters/sea_snail": 1.0
+  },
+  "/actions/combat/skunk": {
+    "/combat_monsters/skunk": 1.0
+  },
+  "/actions/combat/slimy": {
+    "/combat_monsters/slimy": 1.0
+  },
+  "/actions/combat/smelly_planet": {
+    "/combat_monsters/fly": 0.742846,
+    "/combat_monsters/porcupine": 0.631981,
+    "/combat_monsters/rat": 0.713245,
+    "/combat_monsters/skunk": 0.671761,
+    "/combat_monsters/slimy": 0.584797
+  },
+  "/actions/combat/snake": {
+    "/combat_monsters/snake": 1.0
+  },
+  "/actions/combat/sorcerers_tower": {
+    "/combat_monsters/elementalist": 0.746913,
+    "/combat_monsters/flame_sorcerer": 0.897686,
+    "/combat_monsters/ice_sorcerer": 0.898745,
+    "/combat_monsters/novice_sorcerer": 0.959335
+  },
+  "/actions/combat/stalactite_golem": {
+    "/combat_monsters/stalactite_golem": 1.0
+  },
+  "/actions/combat/swamp_planet": {
+    "/combat_monsters/alligator": 0.71919,
+    "/combat_monsters/frog": 0.897616,
+    "/combat_monsters/snake": 0.885356,
+    "/combat_monsters/swampy": 0.770475
+  },
+  "/actions/combat/swampy": {
+    "/combat_monsters/swampy": 1.0
+  },
+  "/actions/combat/treant": {
+    "/combat_monsters/treant": 1.0
+  },
+  "/actions/combat/turtle": {
+    "/combat_monsters/turtle": 1.0
+  },
+  "/actions/combat/twilight_zone": {
+    "/combat_monsters/vampire": 0.777657,
+    "/combat_monsters/werewolf": 0.704329,
+    "/combat_monsters/zombie": 0.888156
+  },
+  "/actions/combat/vampire": {
+    "/combat_monsters/vampire": 1.0
+  },
+  "/actions/combat/veyes": {
+    "/combat_monsters/veyes": 1.0
+  },
+  "/actions/combat/werewolf": {
+    "/combat_monsters/werewolf": 1.0
+  },
+  "/actions/combat/zombie": {
+    "/combat_monsters/zombie": 1.0
+  }
+}
