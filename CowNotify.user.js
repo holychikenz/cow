@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         CowNotify
-// @version      0.0.4
+// @version      0.0.5
 // @description  Milkyway example script
 // @author       Holychikenz
 // @updateURL    https://github.com/holychikenz/cow/raw/main/CowNotify.user.js
@@ -33,6 +33,8 @@ window.WebSocket = function(...args){
 
 class notify {
   constructor() {
+    this.lastXP = 0;
+    this.data = [];
     this.begin();
   }
   begin(promise){
@@ -53,6 +55,10 @@ class notify {
       if( msg.characterAction.actionHrid == "/actions/idle/idle" ){
         this.displayMessage("MoooOoOo")
       }
+    }
+    if( msg.type == "action_completed" ){
+      let deltaXP = msg.endCharacterSkills[0].experience - this.lastXP;
+      this.lastXP = msg.endCharacterSkills[0].experience;
     }
   }
   displayMessage(message) {
@@ -105,15 +111,19 @@ class combatlog {
     self.timer = Date.now();
     self.counter = -1;
     self.damage = 0;
-    self.skillAttack = -1;
-    self.skillDefense = -1;
-    self.skillPower = -1;
-    self.skillIntelligence = -1;
-    self.skillStamina = -1;
+    self.skillAttack = -1e-10;
+    self.skillDefense = -1e-10;
+    self.skillPower = -1e-10;
+    self.skillIntelligence = -1e-10;
+    self.skillRanged = -1e-10;
+    self.skillMagic = -1e-10;
+    self.skillStamina = -1e-10;
     self.beginAttack = 0;
     self.beginDefense= 0;
     self.beginPower= 0;
     self.beginIntelligence = 0;
+    self.beginRanged = 0;
+    self.beginMagic = 0;
     self.beginStamina= 0;
     // update all items
     if( typeof self.combatDrops !== 'undefined' ){
@@ -135,7 +145,10 @@ class combatlog {
     self.beginDefense= 0;
     self.beginPower= 0;
     self.beginIntelligence = 0;
+    self.beginRanged= 0;
+    self.beginMagic= 0;
     self.beginStamina= 0;
+    console.log("partial reset")
   }
   begin(promise){
     let self = this;
@@ -237,6 +250,8 @@ class combatlog {
         <tr><td>Battles</td><td>${kph.toFixed(1)} / hour</td></tr>
         <tr><td>Power XP</td><td>${((this.skillPower-this.beginPower)/timediff).toFixed(0)} / hour</td></tr>
         <tr><td>Attack XP</td><td>${((this.skillAttack-this.beginAttack)/timediff).toFixed(0)} / hour</td></tr>
+        <tr><td>Ranged XP</td><td>${((this.skillRanged-this.beginRanged)/timediff).toFixed(0)} / hour</td></tr>
+        <tr><td>Magic XP</td><td>${((this.skillMagic-this.beginMagic)/timediff).toFixed(0)} / hour</td></tr>
         <tr><td>Stamina XP</td><td>${((this.skillStamina-this.beginStamina)/timediff).toFixed(0)} / hour</td></tr>
         <tr><td>Defense XP</td><td>${((this.skillDefense-this.beginDefense)/timediff).toFixed(0)} / hour</td></tr>
         <tr><td>Intelligence XP</td><td>${((this.skillIntelligence-this.beginIntelligence)/timediff).toFixed(0)} / hour</td></tr>
@@ -256,9 +271,9 @@ class combatlog {
     if( msg.type == 'action_completed' ){
       // update xp stats
       for( let skl of msg.endCharacterSkills ){
-        if( this.skillAttack < 0 ){
-          this.partialreset(this);
-        }
+        //if( this.skillAttack < 0 && this.skillPower < 0 && this.skillMagic < 0 && this.skillRanged < 0 ){
+        //  this.partialreset(this);
+        //}
         if( skl.skillHrid == '/skills/attack' ){
           if( this.skillAttack < 0 ){
             this.beginAttack = skl.experience
@@ -288,6 +303,19 @@ class combatlog {
             this.beginIntelligence = skl.experience
           }
           this.skillIntelligence = skl.experience
+        }
+        if( skl.skillHrid == '/skills/ranged' ){
+          console.log(skl.skillHrid, this.skillRanged, this.beginRanged, skl.experience);
+          if( this.skillRanged < 0 ){
+            this.beginRanged= skl.experience
+          }
+          this.skillRanged = skl.experience
+        }
+        if( skl.skillHrid == '/skills/magic' ){
+          if( this.skillMagic < 0 ){
+            this.beginMagic = skl.experience
+          }
+          this.skillMagic = skl.experience
         }
       }
     }
